@@ -4,14 +4,15 @@ import { Component } from 'react';
 
 export default class Register extends Component {
 
-
+   
     constructor(props) {
         super(props);
+
         this.state = {
-            name: '',
+            name: '', 
             email: '',
             password: '',
-            Isregistered: false
+            isRegistred : false,
         };
     }
   
@@ -22,28 +23,36 @@ export default class Register extends Component {
   handleSubmit = (e) => {
       e.preventDefault();
 
+      
 
       fetch("https://localhost:7144/api/Registration", {
+
           method: "POST",
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(this.state)
-      }).then((res) => {
-          console.log(res);
-        this.setState({Isregistered : true});
-    
+      }).then((res) => {          
+    console.log(res);
+
+            if(res.status===200)
+            this.setState({isRegistred: true});
+            else
+            this.setState({isRegistred: false});
+
       }).catch((err) => {
           console.log(err.message);
-          this.setState({Isregistered :false});
+
       });
 
   }
-
+  
 
   render() {
-    if(this.state.Isregistered){
-        return <Navigate to={ "/home"} pass={ this.setState.name }  />;
-        
-        }
+    
+  if(this.state.isRegistred){
+    return <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />;
+
+  }
+
 
       return (
           <>

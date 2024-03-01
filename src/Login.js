@@ -1,5 +1,5 @@
 import './App.css';
-import { Link } from "react-router-dom";
+import { Link,Navigate} from "react-router-dom";
 import { Component } from 'react';
 export default class Login extends Component {
 
@@ -8,7 +8,9 @@ export default class Login extends Component {
       super(props);
       this.state = {
           email: '',
-          password: ''
+          password: '',
+          name: '',
+          IsLogged: false
       };
   }
 
@@ -18,15 +20,20 @@ export default class Login extends Component {
 
   handleSubmit = (e) => {
       e.preventDefault();
-
+     let JWToken ='';
 
       fetch("https://localhost:7144/api/Registration/login", {
           method: "POST",
-          headers: { 'content-type': 'application/json' },
+          headers: { 'content-type': 'application/json','Authorization' :JWToken },
           body: JSON.stringify(this.state)
       }).then((res) => {
-          console.log(res);
+        
+        if(res.status===200)
+        this.setState({IsLogged: true});
+        else
+        this.setState({IsLogged: false});
 
+        
       }).catch((err) => {
           console.log(err.message);
       });
@@ -35,19 +42,19 @@ export default class Login extends Component {
 
 
   render() {
+
+    if(this.state.IsLogged)
+    return  <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />;
+        
+    else
       return (
           <>
-
-
-
               <div className="container" >
                   <h1> Login </h1>
 
                   <form onSubmit={this.handleSubmit}>
 
-
-                
-                      <div>
+                     <div>
                           <label>Email</label>
                           <input type="email" className="form-control" value={this.state.email} onChange={this.handleChange} name="email" />
 
@@ -58,7 +65,7 @@ export default class Login extends Component {
 
                           <div>
                               <br />
-                              <input type="submit" value="Register" className="btn btn-primary" />
+                              <input type="submit" value="Login" className="btn btn-primary" />
                           </div>
 
                           <div>
