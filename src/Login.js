@@ -20,17 +20,22 @@ export default class Login extends Component {
 
   handleSubmit = (e) => {
       e.preventDefault();
-     let JWToken ='';
+   
 
       fetch("https://localhost:7144/api/Registration/login", {
           method: "POST",
-          headers: { 'content-type': 'application/json','Authorization' :JWToken },
+          headers: { 'content-type': 'application/json'},
           body: JSON.stringify(this.state)
       }).then((res) => {
         
         if(res.status===200)
+        {
         this.setState({IsLogged: true});
+
+       
+        }
         else
+
         this.setState({IsLogged: false});
 
         

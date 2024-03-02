@@ -1,11 +1,9 @@
 import './App.css';
 import { Component } from 'react';
-import { useLocation } from 'react-router-dom';
 
 export default class Home extends Component {
  
   render() {
-
       return (
           <>
 

@@ -1,6 +1,7 @@
 import './App.css';
 import { Link,Navigate} from "react-router-dom";
 import { Component } from 'react';
+import { toast } from 'react-toastify';
 
 export default class Register extends Component {
 
@@ -33,9 +34,10 @@ export default class Register extends Component {
       }).then((res) => {          
     console.log(res);
 
-            if(res.status===200)
+            if(res.status===200){
             this.setState({isRegistred: true});
-            else
+toast.success("Registred Successfully");
+        }else
             this.setState({isRegistred: false});
 
       }).catch((err) => {
@@ -49,7 +51,7 @@ export default class Register extends Component {
   render() {
     
   if(this.state.isRegistred){
-    return <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />;
+    return <Navigate to='/Login'  />;
 
   }
 
