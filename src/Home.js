@@ -22,7 +22,7 @@ export default class Home extends Component {
 
         fetch("https://localhost:7144/api/Registration", {
             method: "GET",
-            headers: { 'content-type': 'application/json', Authorization: 'bearer '+ JWTtoken},
+            headers: { 'content-type': 'application/json', Authorization: 'bearer 4'+ JWTtoken},
         }).then((res) => {
           
           if(res.status===200)

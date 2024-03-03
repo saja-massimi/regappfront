@@ -51,7 +51,6 @@ export default class Register extends Component {
     
   if(this.state.isRegistred){
     return <Navigate to='/Login'  />;
-
   }
 
 
