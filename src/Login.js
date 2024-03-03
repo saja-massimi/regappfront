@@ -10,13 +10,15 @@ export default class Login extends Component {
           email: '',
           password: '',
           name: '',
-          IsLogged: false
-      };
+          isLogged: false,
+         
+              };
   }
 
   handleChange = e => {
       this.setState({ [e.target.name]: e.target.value });
   };
+
 
   handleSubmit = (e) => {
       e.preventDefault();
@@ -27,30 +29,33 @@ export default class Login extends Component {
           headers: { 'content-type': 'application/json'},
           body: JSON.stringify(this.state)
       }).then((res) => {
-        
-        if(res.status===200)
-        {
-        this.setState({IsLogged: true});
+        if (res.status === 200) {
 
-       
+        this.setState({ isLogged: true});
+        console.log("success");
+        return res.json();
+
+        } else {
+         this.setState({ isLogged: false });
+
         }
-        else
-
-        this.setState({IsLogged: false});
-
-        
-      }).catch((err) => {
-          console.log(err.message);
+      })
+      .then((data) => {
+       console.log(data.token);
+       sessionStorage.setItem('token', data.token);
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
+  };
 
-  }
-
-
+ 
   render() {
 
-    if(this.state.IsLogged)
-    return  <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />;
-        
+ //console.log("Is logged",this.state.isLogged);
+
+    if(this.state.isLogged)
+    return <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />; 
     else
       return (
           <>

@@ -36,7 +36,6 @@ export default class Register extends Component {
 
             if(res.status===200){
             this.setState({isRegistred: true});
-toast.success("Registred Successfully");
         }else
             this.setState({isRegistred: false});
 
