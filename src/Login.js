@@ -11,7 +11,7 @@ export default class Login extends Component {
           password: '',
           name: '',
           isLogged: false,
-         
+        
               };
   }
 
@@ -29,15 +29,15 @@ export default class Login extends Component {
           headers: { 'content-type': 'application/json'},
           body: JSON.stringify(this.state)
       }).then((res) => {
-        if (res.status === 200) {
 
+        if (res.status === 200) {
         this.setState({ isLogged: true});
         console.log("success");
+
         return res.json();
 
         } else {
          this.setState({ isLogged: false });
-
         }
       })
       .then((data) => {
@@ -53,7 +53,7 @@ export default class Login extends Component {
   render() {
 
  //console.log("Is logged",this.state.isLogged);
-
+  
     if(this.state.isLogged)
     return <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />; 
     else

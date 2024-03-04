@@ -1,5 +1,6 @@
 import './App.css';
 import { Component } from 'react';
+import { Navigate} from "react-router-dom";
 
 export default class Home extends Component {
  
@@ -8,7 +9,8 @@ export default class Home extends Component {
         super(props);
 
         this.state = {
-            username: ''
+            username: '',
+            isAuthorized: true
         };
     }
     componentDidMount()
@@ -22,15 +24,18 @@ export default class Home extends Component {
 
         fetch("https://localhost:7144/api/Registration", {
             method: "GET",
-            headers: { 'content-type': 'application/json', Authorization: 'bearer 4'+ JWTtoken},
+            headers: { 'content-type': 'application/json', Authorization: 'bearer '+ JWTtoken},
         }).then((res) => {
           
           if(res.status===200)
           {
+            this.setState({isAuthorized: true});
         console.log(res);
          return res.json();
           
-          }
+          }else           
+          this.setState({isAuthorized: false});
+
     
         }).then((data) => {
 
@@ -49,7 +54,8 @@ export default class Home extends Component {
         
     
   render() {
-
+    if(!this.state.isAuthorized)
+    return <Navigate to={{ pathname: '/unauthorized' }} />; 
       return (
           <>
 
