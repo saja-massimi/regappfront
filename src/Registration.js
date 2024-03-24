@@ -14,9 +14,9 @@ export default function Register() {
             password: '',
         },
         validationSchema: Yup.object().shape({
-            name: Yup.string().required().min(3, 'must be at least 3 characters'),
-            email: Yup.string().required().email(),
-            password: Yup.string().required().min(6, 'must be at least 6 characters'),
+            name: Yup.string().required("This feild is required").min(3, 'must be at least 3 characters'),
+            email: Yup.string().required("This feild is required").email(),
+            password: Yup.string().required("This feild is required").min(6, 'must be at least 6 characters'),
         }),
         onSubmit: (values) => {
             console.log(values);
@@ -36,13 +36,17 @@ export default function Register() {
                 console.log(err.message);
             });
         },
+    handleBlur: true,
     validateOnMount: true
     });
+
+
+console.log(formik.errors);
 
     if (isRegistered) {
         return <Navigate to='/Login' />;
     }
-
+else
     return (
         <>
             <div className="container">
@@ -51,22 +55,27 @@ export default function Register() {
                 <form onSubmit={formik.handleSubmit}>
                     <div>
                         <label>Name</label>
-                        <input type="text" className="form-control" value={formik.values.name} onChange={formik.handleChange} name="name"  />
+                        <input type="text" className="form-control" value={formik.values.name} onChange={formik.handleChange} name="name" onBlur={formik.handleBlur}  />
+                        {formik.errors.name && formik.touched.name ? <p className='error' >{formik.errors.name}</p> : null}
                     </div>
-
+                    
                     <div>
                         <label>Email</label>
-                        <input type="email" className="form-control" value={formik.values.email} onChange={formik.handleChange} name="email"  />
+                        <input type="email" className="form-control" value={formik.values.email} onChange={formik.handleChange} name="email" onBlur={formik.handleBlur}/>
+                        {formik.errors.email && formik.touched.email ? <p className="error" >{formik.errors.email}</p> : null}
+
                     </div>
 
                     <div>
                         <label>Password</label>
-                        <input type="password" className="form-control" value={formik.values.password} onChange={formik.handleChange} name="password"  />
+                        <input type="password" className="form-control" value={formik.values.password} onChange={formik.handleChange} name="password" onBlur={formik.handleBlur} />
+                        {formik.errors.password && formik.touched.password ? <p className="error" >{formik.errors.password}</p> : null}
+
                     </div>
 
                     <div>
                         <br />
-                        <input type="submit" value="Register" className="btn btn-primary" />
+                        <input type="submit" value="Register" className="btn btn-primary" disabled={formik.isSubmitting} />
                     </div>
 
                     <div>

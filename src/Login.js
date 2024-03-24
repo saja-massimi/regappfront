@@ -19,7 +19,6 @@ export default class Login extends Component {
       this.setState({ [e.target.name]: e.target.value });
   };
 
-
   handleSubmit = (e) => {
       e.preventDefault();
    
@@ -66,7 +65,8 @@ export default class Login extends Component {
 
                      <div>
                           <label>Email</label>
-                          <input type="email" className="form-control" value={this.state.email} onChange={this.handleChange} name="email" />
+                          <input type="email" className="form-control " value={this.state.email} onChange={this.handleChange} name="email"  />
+                          
 
                           <div>
                               <label>Password</label>
