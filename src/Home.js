@@ -1,7 +1,8 @@
 import './App.css';
 import { Component } from 'react';
 import { Navigate} from "react-router-dom";
-
+import { Navbar, Nav } from 'react-bootstrap';
+import MyNavbar, {myNavbar} from './MyNavbar';
 export default class Home extends Component {
  
 
@@ -30,7 +31,6 @@ export default class Home extends Component {
           if(res.status===200)
           {
             this.setState({isAuthorized: true});
-        console.log(res);
          return res.json();
           
           }else           
@@ -59,7 +59,11 @@ export default class Home extends Component {
       return (
           <>
 
-              <div className="container" >
+          <MyNavbar/>
+
+
+
+                <div className="container" >
                   <h1> Welcome  {this.state.username}</h1>
               </div>
 

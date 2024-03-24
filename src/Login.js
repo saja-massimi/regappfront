@@ -55,8 +55,8 @@ export default class Login extends Component {
   
     if(this.state.isLogged)
     return <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />; 
-    else
-      return (
+    else 
+ return (
           <>
               <div className="container" >
                   <h1> Login </h1>
