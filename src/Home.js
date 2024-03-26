@@ -1,10 +1,8 @@
 import './App.css';
 import { Component } from 'react';
 import { Navigate} from "react-router-dom";
-import { Navbar, Nav } from 'react-bootstrap';
-import MyNavbar, {myNavbar} from './MyNavbar';
+import MyNavbar from './MyNavbar';
 export default class Home extends Component {
- 
 
     constructor(props) {
         super(props);
@@ -16,12 +14,11 @@ export default class Home extends Component {
     }
     componentDidMount()
     {
-     this.getUsername();
+    this.getUsername();
     }
 
     getUsername = () => {
-
-       let JWTtoken = sessionStorage.getItem('token');
+        let JWTtoken = sessionStorage.getItem('token');
 
         fetch("https://localhost:7144/api/Registration", {
             method: "GET",
@@ -30,8 +27,8 @@ export default class Home extends Component {
           
           if(res.status===200)
           {
-            this.setState({isAuthorized: true});
-         return res.json();
+          this.setState({isAuthorized: true});
+          return res.json();
           
           }else           
           this.setState({isAuthorized: false});
@@ -63,7 +60,7 @@ export default class Home extends Component {
 
 
 
-                <div className="container" >
+                <div className="container" style={{paddingTop:'80px'}} >
                   <h1> Welcome  {this.state.username}</h1>
               </div>
 

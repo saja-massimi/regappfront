@@ -3,32 +3,30 @@ import { Link,Navigate} from "react-router-dom";
 import { Component } from 'react';
 export default class Login extends Component {
 
- 
-  constructor(props) {
-      super(props);
-      this.state = {
-          email: '',
-          password: '',
-          name: '',
-          isLogged: false,
+
+    constructor(props) {
+    super(props);
+    this.state = {
+        email: '',
+        password: '',
+        name: '',
+        isLogged: false,
         
-              };
-  }
+        };
+}
 
-  handleChange = e => {
-      this.setState({ [e.target.name]: e.target.value });
-  };
+    handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+    };
 
-  handleSubmit = (e) => {
-      e.preventDefault();
-   
+    handleSubmit = (e) => {
+    e.preventDefault();
 
-      fetch("https://localhost:7144/api/Registration/login", {
-          method: "POST",
-          headers: { 'content-type': 'application/json'},
-          body: JSON.stringify(this.state)
-      }).then((res) => {
-
+    fetch("https://localhost:7144/api/Registration/login", {
+    method: "POST",
+    headers: { 'content-type': 'application/json'},
+        body: JSON.stringify(this.state)}).
+        then((res) => {
         if (res.status === 200) {
         this.setState({ isLogged: true});
         console.log("success");
@@ -36,23 +34,23 @@ export default class Login extends Component {
         return res.json();
 
         } else {
-         this.setState({ isLogged: false });
+            this.setState({ isLogged: false });
         }
-      })
-      .then((data) => {
-       console.log(data.token);
-       sessionStorage.setItem('token', data.token);
-      })
-      .catch((error) => {
+        })
+        .then((data) => {
+        console.log(data.token);
+        sessionStorage.setItem('token', data.token);
+    })
+        .catch((error) => {
         console.log(error.message);
-      });
-  };
+});
+    };
 
- 
-  render() {
+
+render() {
 
  //console.log("Is logged",this.state.isLogged);
-  
+
     if(this.state.isLogged)
     return <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />; 
     else 

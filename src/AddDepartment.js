@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MyNavbar from './MyNavbar';
 
 
 function AddDepartment() {
@@ -9,27 +10,28 @@ const handleSubmit = (e) => {
 
     fetch('https://localhost:7144/api/Departments',{
         method: 'POST',
-        Headers :{'content-type' :'application/json'}, 
+        headers :{'content-type' :'application/json'}, 
+        body: JSON.stringify(department)
     })
-    .then(response => console.log('success'))
+    .then(response => console.log(response.json()))
     .catch(error => console.error(error));
 
 }
 
 const handleChange = (e) => {
-    e.preventDefault();
     setDepartments({...department, [e.target.name]: e.target.value});
 }
 
     return (
         <div>
-
+    <MyNavbar/>
     <form onSubmit={handleSubmit}>
-        <div className='container'>
+        <div className='container'style={{paddingTop:'80px'}} >
             <h1>Add Department</h1>
             <div className='form-group'>
                 <label>Department Name(EN)</label>
                 <input className='form-control' type='text' name='departmentNameEN' onChange={handleChange}/>
+                <input className='form-control' type='hidden' name='id' onChange={handleChange}/>
             </div>
             <div className='form-group'>
                 <label>Department Name(AR)</label>
@@ -37,7 +39,7 @@ const handleChange = (e) => {
             </div>
             <div className='form-group'>
                 <label>Created</label>
-                <input className='form-control' type='date' name='created' onChange={handleChange}/>
+                <input className='form-control' type='datetime-local' name='created' onChange={handleChange}/>
             </div>
             <div className='form-group'>
                 <label>Created By</label>
@@ -45,7 +47,7 @@ const handleChange = (e) => {
             </div>
             <div className='form-group'>
                 <label>Modified</label>
-                <input className='form-control' type='date' name='modified' onChange={handleChange}/>
+                <input className='form-control' type='datetime-local' name='modified' onChange={handleChange}/>
             </div>
             <div className='form-group'>
                 <label>Modified By</label>

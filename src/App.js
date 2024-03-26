@@ -6,6 +6,7 @@ import Unathorized from './Unauthorized';
 import Departments from './Departments';
 import Employees from './Employees';
 import AddDepartment from './AddDepartment';
+import EditDepartment from './editDepartment';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path= "/departments" element = {<Departments/>} />
         <Route path= "/employees" element = {<Employees/>}/>
         <Route path= "/addDepartments" element = {<AddDepartment/>} />
-
+        <Route path= "/editDepartment/:id" element = {< EditDepartment/>} />
       </Routes> 
       </div>
   

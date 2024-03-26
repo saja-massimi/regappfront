@@ -9,10 +9,13 @@ const [departments,setDepartments] = useState([]);
 const nav = useNavigate();
 
 
-const handleAddDepartmentClick = () => {
+const handleAddDepartmentClick = (e) => {
     nav('/addDepartments');
 };
 
+const handleEditDepartmentClick = ( id) => {
+    nav('/editDepartment/'+id);
+};
 
 
 useEffect(() => {
@@ -36,11 +39,10 @@ useEffect(() => {
 
     return (
         <>
-        
         <div>
         <MyNavbar/>
         <br/>
-        <div className='container'>
+        <div className='container' style={{paddingTop:'80px'}}>
         <button className='btn btn-success' onClick={handleAddDepartmentClick}>Add Department</button>
         </div>
 
@@ -70,6 +72,7 @@ useEffect(() => {
             <td>{department.createdBy}</td>
             <td>{department.modified}</td>
             <td>{department.modifiedBy}</td>
+            <td><button type='button' className='btn btn-secondary' onClick={()=>handleEditDepartmentClick(department.id)}>Edit</button></td>
         </tr>
     ))}
     
