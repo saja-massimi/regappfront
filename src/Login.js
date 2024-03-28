@@ -49,48 +49,45 @@ export default class Login extends Component {
 
 render() {
 
- //console.log("Is logged",this.state.isLogged);
-
     if(this.state.isLogged)
     return <Navigate to={{ pathname: '/Home', state: { name: this.state.name } }} />; 
     else 
- return (
-          <>
-              <div className="container" >
-                  <h1> Login </h1>
+    return (
+    <>
+    <div className="container" >
+            <h1> Login </h1>
 
-                  <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit}>
 
-                     <div>
-                          <label>Email</label>
-                          <input type="email" className="form-control " value={this.state.email} onChange={this.handleChange} name="email"  />
-                          
+                    <div>
+                        <label>Email</label>
+                        <input type="email" className="form-control " value={this.state.email} onChange={this.handleChange} name="email"  />
+                        
 
-                          <div>
-                              <label>Password</label>
-                              <input type="password" className="form-control" value={this.state.password} onChange={this.handleChange} name="password" />
-                          </div>
+                        <div>
+                            <label>Password</label>
+                            <input type="password" className="form-control" value={this.state.password} onChange={this.handleChange} name="password" />
+                        </div>
 
-                          <div>
-                              <br />
-                              <input type="submit" value="Login" className="btn btn-primary" />
-                          </div>
+                        <div>
+                            <br />
+                        <input type="submit" value="Login" className="btn btn-primary" />
+                        </div>
 
-                          <div>
-                              <br />
+                        <div>
+                            <br />
 
-                              <Link to="./Registration">New User?</Link>
-                              
-                          </div>
-                      </div>
-                  </form>
+                            <Link to="./Registration">New User?</Link>
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-              </div>
+        </>
+    );
 
-          </>
-      );
-
-  }
+}
 
 
 }

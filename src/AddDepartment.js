@@ -18,20 +18,25 @@ const handleSubmit = (e) => {
 
 }
 
-const handleChange = (e) => {
-    setDepartments({...department, [e.target.name]: e.target.value});
-}
+    const handleChange = (e) => {
+        if(e.target.name == 'id')
+        setDepartments({...department, [e.target.name]: 0});
+    else
+        setDepartments({...department, [e.target.name]: e.target.value});
+    }
 
     return (
         <div>
     <MyNavbar/>
     <form onSubmit={handleSubmit}>
-        <div className='container'style={{paddingTop:'80px'}} >
+        <div className='container' style={{paddingTop:'80px'}} >
             <h1>Add Department</h1>
             <div className='form-group'>
+            
+                <input className='form-control' type='hidden' name='id' onChange={handleChange}/>
                 <label>Department Name(EN)</label>
                 <input className='form-control' type='text' name='departmentNameEN' onChange={handleChange}/>
-                <input className='form-control' type='hidden' name='id' onChange={handleChange}/>
+                
             </div>
             <div className='form-group'>
                 <label>Department Name(AR)</label>
@@ -42,6 +47,7 @@ const handleChange = (e) => {
                 <input className='form-control' type='datetime-local' name='created' onChange={handleChange}/>
             </div>
             <div className='form-group'>
+            
                 <label>Created By</label>
                 <input className='form-control' type='text' name='createdBy' onChange={handleChange}/>
             </div>

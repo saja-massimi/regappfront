@@ -41,7 +41,6 @@ useEffect(() => {
         <>
         <div>
         <MyNavbar/>
-        <br/>
         <div className='container' style={{paddingTop:'80px'}}>
         <button className='btn btn-success' onClick={handleAddDepartmentClick}>Add Department</button>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import MyNavbar, {myNavbar} from './MyNavbar';
+import MyNavbar from './MyNavbar';
 
 
 function Employees() {
@@ -7,6 +7,7 @@ function Employees() {
 
         <>
         <MyNavbar/>
+
 
         </>
     );

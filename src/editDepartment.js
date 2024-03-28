@@ -5,66 +5,62 @@ import { useParams } from 'react-router-dom';
 
 function EditDepartment() {
 
-
-    const {id} = useParams();
-    const [dep,editDepartment] = useState(
-    {
-        id : id,
-        departmentNameEN : '',
-        departmentNameAR :'',
-        created : '',
-        createdBy : '',
-        modified : '',
-        modifiedBy : ''
-
-    }
-
-);
-/*
-useEffect(()=>{
-    fetch('https://localhost:7144/api/Departments',
-    {
-        method: 'GET',
-        headers : {'content-type' : 'application/json'}
-    }
-    ).then((res)=>{
-        res.json();
-    }).then((data) => {
-    console.log('Success');
-    }).catch((error) => {
-        console.log(error);
-    }
-    )
-});*/
-
-const handleSubmit = (e) => {
-e.preventDefault();
-fetch('https://localhost:7144/api/Departments/${id}',
-{
-    method: 'PUT',
-    headers : {'content-type' : 'application/json'}
-}
-).then((res)=>{
-    res.json();
-}).then((data) => {
-console.log('updated successfully');
-}).catch((error) => {
-    console.log(error);
-}
-)
+    const { id } = useParams();
+    const [dep, setDepartment] = useState({
+    id : 0,
+    departmentNameEN:'',
+    departmentNameAR:'',
+    created: '',
+    createdBy: '',
+    modified: '',
+    modifiedBy: ''
+    });
 
 
-};
+        useEffect(() => {
+            fetch(`https://localhost:7144/api/Departments/${id}`,{
+                method: 'GET',
+                
+                headers :{'content-type' :'application/json'},  
+            }).then(response =>{
+                return response.json()
+            }).then(data => {   
+                console.log(data[0].modifiedBy);
+                setDepartment(data[0]);
+                })
+            .catch(error => console.error(error));
+            
+        }, [id]);
 
-const handleChange = (e) => {
-    const { name, value } = e.target;
+        const handleSubmit = (e) => {
+        e.preventDefault();
+        fetch(`https://localhost:7144/api/Departments/${id}`,
+        {
+            body: JSON.stringify(dep),
+            method: 'PUT',
+            headers : {'content-type' : 'application/json'}
+        }
+        ).then((res)=>{
+            return res.json();
+        }).then((data) => {
+        console.log('updated successfully');
+        }).catch((error) => {
+            console.log(error);
+        }
+        )
 
+        };
 
-    editDepartment(prevState => ({
-        ...prevState,
-        [name]: value
-    }));
-};
+        const handleChange = (e) => {
+            e.preventDefault();
+            const { name, value } = e.target;
+
+            setDepartment(prevState => ({
+                ...prevState,
+                [name]: value       
+            }));
+        };
+
 
 
 
@@ -77,8 +73,8 @@ const handleChange = (e) => {
             <h1>Edit Department</h1>
             <div className='form-group'>               
                 <label>Department Name(EN)</label>
+                <input className='form-control' type='hidden' name='ID' value={dep.ID}/>
                 <input className='form-control' type='text' name='departmentNameEN' value={dep.departmentNameEN} onChange={handleChange}/> 
-                <input className='form-control' type='hidden' name='id' value={dep.id}/>
             </div>
             <div className='form-group'>
                 <label>Department Name(AR)</label>
@@ -98,7 +94,7 @@ const handleChange = (e) => {
             </div>
             <div className='form-group'>
                 <label>Modified By</label>
-                <input className='form-control' type='text' name='modifiedBy' value={dep.modifiedBy} onChange={handleChange}/>
+                <input className='form-control' type='text' name='ModifiedBy' value={dep.modifiedBy} onChange={handleChange}/>
             </div>
             <br/>
             <div className='form-group'>

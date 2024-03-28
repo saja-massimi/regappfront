@@ -38,7 +38,7 @@ export default class Home extends Component {
 
             console.log(data);
             this.setState({ username: data.username }); 
-
+            
           })
           .catch((err) => {
             console.log(err.message);
