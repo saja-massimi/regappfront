@@ -7,6 +7,8 @@ import Departments from './Departments';
 import Employees from './Employees';
 import AddDepartment from './AddDepartment';
 import EditDepartment from './editDepartment';
+import AddEmployee from './AddEmployee';
+import EditEmployee from './EditEmployee';
 
 function App() {
   return (
@@ -21,6 +23,10 @@ function App() {
         <Route path= "/employees" element = {<Employees/>}/>
         <Route path= "/addDepartments" element = {<AddDepartment/>} />
         <Route path= "/editDepartment/:id" element = {< EditDepartment/>} />
+        <Route path= "/addEmployee" element = {< AddEmployee/>} />
+        <Route path= "/editEmployee/:id" element = {< EditEmployee/>} />
+
+
       </Routes> 
       </div>
   

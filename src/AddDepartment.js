@@ -19,7 +19,7 @@ const handleSubmit = (e) => {
 }
 
     const handleChange = (e) => {
-        if(e.target.name == 'id')
+        if(e.target.name === 'id')
         setDepartments({...department, [e.target.name]: 0});
     else
         setDepartments({...department, [e.target.name]: e.target.value});

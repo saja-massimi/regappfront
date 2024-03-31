@@ -18,12 +18,12 @@ function EditDepartment() {
 
 
         useEffect(() => {
+
             fetch(`https://localhost:7144/api/Departments/${id}`,{
-                method: 'GET',
-                
+                method: 'GET',          
                 headers :{'content-type' :'application/json'},  
             }).then(response =>{
-                return response.json()
+                return response.json();
             }).then(data => {   
                 console.log(data[0].modifiedBy);
                 setDepartment(data[0]);

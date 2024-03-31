@@ -25,8 +25,8 @@ export default class Login extends Component {
     fetch("https://localhost:7144/api/Registration/login", {
     method: "POST",
     headers: { 'content-type': 'application/json'},
-        body: JSON.stringify(this.state)}).
-        then((res) => {
+        body: JSON.stringify(this.state)
+    }).then((res) => {
         if (res.status === 200) {
         this.setState({ isLogged: true});
         console.log("success");
