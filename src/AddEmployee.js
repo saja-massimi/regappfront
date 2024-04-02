@@ -26,7 +26,7 @@ headers :{'content-type' :'application/json'},
 }).then(res => {
     return res.json();
 }).then(info => {
-    setManagers(info)
+    setManagers(info);
 },
     ).catch(error => console.log(error));
 },[]);  
@@ -39,7 +39,8 @@ e.preventDefault();
         body: JSON.stringify(employees)
 
     }).then(response => {
-        return response.json();
+        const jsonData = JSON.parse(response);
+        return jsonData;
     }).then(data=>{
         console.log(data);
     }).then(error => 
@@ -125,12 +126,11 @@ const handleChange = (e) => {
                     <div className='form-group'>
                         <label>Department</label>
                         <select className='form-control' onChange={handleChange} name='departmentID'>
-                
                         {departments.map((department,index) =>
                             (
                             <option key={index} value={department.id}>{department.departmentNameEN}</option>
                             )
-
+                                
                         )}
                 
                         </select>

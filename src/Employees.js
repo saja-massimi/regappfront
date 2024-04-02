@@ -6,12 +6,12 @@ import { useNavigate  } from 'react-router-dom';
 function Employees() {
     const nav = useNavigate();
     const[employee,setEmployee] = useState([]);
-
+    let JWTtoken = sessionStorage.getItem('token');
     useEffect(()=>
-    {
+    {   
         fetch('https://localhost:7144/api/Employees',{
         method: 'GET',
-        headers :{'content-type' :'application/json'},
+        headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken},
     } 
         )
         .then(res=>{
@@ -30,6 +30,22 @@ function Employees() {
     const handleEditEmployeeClick = ( id) => {
         nav('/editEmployee/'+id);
     }
+
+
+    const handleDeleteEmployee = (id) => {
+    fetch(`https://localhost:7144/api/Employees/${id}`,{
+        method: 'DELETE',
+        headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken}, 
+    })
+    .then(response => response.json())
+    .then(data => 
+        {
+            setEmployee(employee.filter(emp => emp.empID !== id));
+            console.log('deleted successfully');
+        })
+    .catch(error => console.error(error));
+
+    };
 
     return (
 
@@ -79,6 +95,8 @@ function Employees() {
                             <td>{emp.empModified}</td>
                             <td>{emp.empModifiedBy}</td>
                             <td><button type='button' className='btn btn-secondary' onClick={()=>handleEditEmployeeClick(emp.empID)}>Edit</button></td>
+                            <td><button type='button' className='btn btn-danger' onClick={()=>handleDeleteEmployee(emp.empID)}>Delete</button></td>
+
                         </tr>
                     ))}
 

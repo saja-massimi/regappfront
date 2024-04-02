@@ -25,7 +25,6 @@ function EditDepartment() {
             }).then(response =>{
                 return response.json();
             }).then(data => {   
-                console.log(data[0].modifiedBy);
                 setDepartment(data[0]);
                 })
             .catch(error => console.error(error));

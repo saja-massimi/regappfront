@@ -5,6 +5,7 @@ import { useNavigate  } from 'react-router-dom';
 function Departments() {
 
 const [departments,setDepartments] = useState([]);
+let JWTtoken = sessionStorage.getItem('token');
 
 const nav = useNavigate();
 
@@ -17,8 +18,21 @@ const handleEditDepartmentClick = ( id) => {
     nav('/editDepartment/'+id);
 };
 
+const handleDeleteDepartmentClick = (id) => {
 
-useEffect(() => {
+    fetch(`https://localhost:7144/api/Departments/${id}`,{
+        method: 'DELETE',
+        Headers :{'content-type' :'application/json'} 
+    })
+    .then(response => response.json())
+    .then(data => 
+        {
+            console.log('deleted successfully');
+        })
+    .catch(error => console.error(error));
+}
+
+useEffect(() => {  
     fetch('https://localhost:7144/api/Departments',{
         method: 'GET',
         Headers :{'content-type' :'application/json'}, 
@@ -31,7 +45,7 @@ useEffect(() => {
         })
     .catch(error => console.error(error));
     
-},  [] );
+},  [JWTtoken] );
 
 
 
@@ -72,6 +86,7 @@ useEffect(() => {
             <td>{department.modified}</td>
             <td>{department.modifiedBy}</td>
             <td><button type='button' className='btn btn-secondary' onClick={()=>handleEditDepartmentClick(department.id)}>Edit</button></td>
+            <td><button type='button' className='btn btn-danger' onClick={()=>handleDeleteDepartmentClick(department.id)}>Delete</button></td>
         </tr>
     ))}
     

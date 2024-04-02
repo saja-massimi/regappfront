@@ -13,7 +13,9 @@ const handleSubmit = (e) => {
         headers :{'content-type' :'application/json'}, 
         body: JSON.stringify(department)
     })
-    .then(response => console.log(response.json()))
+    .then(response => {
+        return response.json;
+    })
     .catch(error => console.error(error));
 
 }
