@@ -4,17 +4,30 @@ import { useParams } from 'react-router-dom';
 
 function EditEmployee() {
     const { id } = useParams();
-
-    const [emp, setEmployee] = useState([]);
+    const [emp, setEmployee] = useState({empID: '',
+    empNameEN: '',
+    empNameAR: '',
+    managerID: '',
+    isManger: false, 
+    salary: 0, 
+    hireDate: '',
+    jobTitle: '',
+    departmentID: '',
+    leaveBalance: 0,
+    empCreated: '',
+    empCreatedBy: '',
+    empModified: '',
+    empModifiedBy: ''});
     const [managers, setManagers] = useState([]);
     const [departments , setDepartments] = useState([]);
+    let JWTtoken = sessionStorage.getItem('token');
 
 
     useEffect(() =>{
 fetch(`https://localhost:7144/api/Employees/${id}`,
     {
     method : 'GET',
-    headers : {'content-type' : 'application/json'},
+    headers : {'content-type' : 'application/json',Authorization: 'bearer '+ JWTtoken},
     }).then(
         response => {return response.json();
     }).then(
@@ -27,9 +40,11 @@ fetch(`https://localhost:7144/api/Employees/${id}`,
         fetch(`https://localhost:7144/api/Employees`,
         {
         method : 'GET',
-        headers : {'content-type' : 'application/json'},
+        headers : {'content-type' : 'application/json',  
+        Authorization: 'bearer '+ JWTtoken},
         }).then(
-            response => {return response.json();
+            response => {
+                return response.json();
         }).then(
             data=>{
             setManagers(data);
@@ -40,7 +55,7 @@ fetch(`https://localhost:7144/api/Employees/${id}`,
 
             fetch('https://localhost:7144/api/Departments',{
                 method: 'GET',  
-                headers :{'content-type' :'application/json'},  
+                headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken},  
                 }).then(response =>{
                     return response.json();
                 }).then (data =>
@@ -59,10 +74,12 @@ fetch(`https://localhost:7144/api/Employees/${id}`,
         {
             body: JSON.stringify(emp),
             method: 'PUT',
-            headers : {'content-type' : 'application/json'}
+            headers : {'content-type' : 'application/json',Authorization: 'bearer '+ JWTtoken}
         }
         ).then((res)=>{
-            return res.json();
+            
+            console.log(res);
+         //   return res.json();
         }).then((data) => {
         console.log('updated successfully');
         }).catch((error) => {
@@ -76,12 +93,13 @@ fetch(`https://localhost:7144/api/Employees/${id}`,
 
     const handleChange = (e) => {
         e.preventDefault();
-        const { name, value } = e.target;
+        const { name, value, type } = e.target;
+    const newValue = type === 'radio' ? (value === 'true') : value;
 
-        setEmployee(prevState => ({
-            ...prevState,
-            [name]: value       
-        }));
+    setEmployee(prevState => ({
+        ...prevState,
+        [name]: newValue
+    }));
     };
 
 
@@ -94,7 +112,7 @@ fetch(`https://localhost:7144/api/Employees/${id}`,
                 <form onSubmit={handleSubmit}>
 
                     <div className='form-group'>   
-                        <input className='form-control' type='hidden' name='empID' onChange={handleChange} value={emp.empID}/>
+                        <input className='form-control' type='hidden' name='empID' value={emp.empID}/>
                         <label>Employee Name (EN)</label>
                         <input type='text' className='form-control' name='empNameEN' onChange={handleChange} value={emp.empNameEN}/>
                     </div>
@@ -126,14 +144,16 @@ fetch(`https://localhost:7144/api/Employees/${id}`,
                         
                     Is Manager?
                     <div className="form-check">
-                    <input className="form-check-input" type="radio" name="isManger" id="yes" onChange={handleChange} value={true.toString()} checked={emp.isManger===true}/>
+                    <input className="form-check-input" type="radio" name="isManger" id="yes" onChange={handleChange} value={true} checked={emp.isManger===true}/>
+
                     <label className="form-check-label">
                     Yes
                     </label>
                     </div>
                     <div className="form-check">
-                    <input className="form-check-input" type="radio" name="isManger" id="no" onChange={handleChange} value={false.toString()} checked={emp.isManger===false}/>
+                    <input className="form-check-input" type="radio" name="isManger" id="no" onChange={handleChange} value={false} checked={emp.isManger===false}/>
                     <label className="form-check-label">
+                        
                     No
                     </label>
                     </div>

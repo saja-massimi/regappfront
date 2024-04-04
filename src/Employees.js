@@ -36,11 +36,8 @@ function Employees() {
     fetch(`https://localhost:7144/api/Employees/${id}`,{
         method: 'DELETE',
         headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken}, 
-    })
-    .then(response => response.json())
-    .then(data => 
+    }).then(data => 
         {
-            setEmployee(employee.filter(emp => emp.empID !== id));
             console.log('deleted successfully');
         })
     .catch(error => console.error(error));

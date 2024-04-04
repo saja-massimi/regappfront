@@ -1,12 +1,18 @@
 import React, { useEffect,useState } from 'react';
 import MyNavbar from './MyNavbar';
-
+import { useNavigate  } from 'react-router-dom';
+import { useForm  } from "react-hook-form";
+import {z} from 'zod';
 
 function AddEmployee() {
+const { register, formState :{errors,isSubmitting}, handleSubmit} = useForm();
 
 const [departments , setDepartments] = useState([]);
 const [managers , setManagers] = useState([]);
-const [employees, setEmployees] = useState([]);
+
+
+let JWTtoken = sessionStorage.getItem('token');
+const nav = useNavigate();
 
 useEffect( () => {
 
@@ -31,54 +37,44 @@ headers :{'content-type' :'application/json'},
     ).catch(error => console.log(error));
 },[]);  
 
-const  handleSubmit = (e) => {
+const  onSubmit = (e,data) => {
 e.preventDefault();
-    fetch('https://localhost:7144/api/Employees',{
-        method :'POST',
-        headers :{'content-type' :'application/json'},
-        body: JSON.stringify(employees)
+//Authorization: 'bearer '+ JWTtoken
+fetch('https://localhost:7144/api/Employees',{
+    method: 'POST',
+    headers :{'content-type' :'application/json'}, 
+    body: JSON.stringify(data)
+}).catch(error => console.error(error));
 
-    }).then(response => {
-        const jsonData = JSON.parse(response);
-        return jsonData;
-    }).then(data=>{
-        console.log(data);
-    }).then(error => 
-        console.log(error));
+
+
+        
 }
 
-const handleChange = (e) => {
-    if(e.target.name === 'empID')
-    setEmployees({...employees, [e.target.name]: 0});
-    if(e.target.name === 'isManger'&& e.target.value === 'false')
-    setEmployees({...employees, [e.target.name]: false}); 
-    if(e.target.name === 'isManger'&& e.target.value === 'true')
-    setEmployees({...employees, [e.target.name]: true});
-    else
-    setEmployees({...employees, [e.target.name]: e.target.value});
-}
+
+
     return (
         <div>
             <MyNavbar/>
+            <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
+            
             <div className='container' style={{paddingTop:'80px'}}>
                 <h1>Add Employee</h1>
-                <form onSubmit={handleSubmit}>
 
                     <div className='form-group'>   
-                        <input className='form-control' type='hidden' name='empID' onChange={handleChange}/>
+                        <input className='form-control' type='hidden' name='empID' {...register("empID")}/>
                         <label>Employee Name (EN)</label>
-                        <input type='text' className='form-control' name='empNameEN' onChange={handleChange}/>
+                        <input type='text' className='form-control' name='empNameEN' {...register("empNameEN")}/>
                     </div>
 
                     <div className='form-group'>
                         <label>Employee Name (AR)</label>
-                        <input type='text' className='form-control' onChange={handleChange} name='empNameAR'/>
+                        <input type='text' className='form-control' name='empNameAR' {...register("empNameAR")} />
                     </div>
 
                     <div className='form-group'>
                         <label>Managers</label>
-                        <select className='form-control' onChange={handleChange} name='managerID'>
-                    
+                        <select className='form-control' name='managerID' {...register("managerID")}>
 
                             {managers.map((manager ,index) => 
                             {
@@ -88,22 +84,22 @@ const handleChange = (e) => {
                                 return null
                             }
                             )}  
+
                         </select>
                         
-                        {console.log(employees)}
                     </div>
 
                     <br/>
                     <div className='form-control'>
                     Is Manager?
                     <div className="form-check">
-                    <input className="form-check-input" type="radio" name="isManger" id="yes" onChange={handleChange} value={true.toString()}/>
+                    <input className="form-check-input" type="radio" name="isManger" id="yes" {...register("isManager")} value={true.toString()}/>
                     <label className="form-check-label">
                     Yes
                     </label>
                     </div>
                     <div className="form-check">
-                    <input className="form-check-input" type="radio" name="isManger" id="no" onChange={handleChange} value={false.toString()} />
+                    <input className="form-check-input" type="radio" name="isManger" id="no" {...register("isManager")} value={false.toString()} />
                     <label className="form-check-label">
                     No
                     </label>
@@ -112,20 +108,20 @@ const handleChange = (e) => {
 
                     <div className='form-group'>
                         <label>Salary</label>
-                        <input type='number' className='form-control' max={9000} onChange={handleChange} name='salary'/>
+                        <input type='number' className='form-control' max={9000} {...register("salary")} name='salary'/>
                     </div>
                     <div className='form-group'>
                         <label>Hire Date</label>
-                        <input type='datetime-local' className='form-control' onChange={handleChange} name='hireDate'/>
+                        <input type='datetime-local' className='form-control' {...register("hireDate")} name='hireDate'/>
                     </div>
                     <div className='form-group'>
                         <label>Job Title</label>
-                        <input type='text' className='form-control' onChange={handleChange} name='jobTitle'/>
+                        <input type='text' className='form-control' {...register("jobTitle")} name='jobTitle'/>
                     </div>
 
                     <div className='form-group'>
                         <label>Department</label>
-                        <select className='form-control' onChange={handleChange} name='departmentID'>
+                        <select className='form-control' {...register("departmentID")} name='departmentID'>
                         {departments.map((department,index) =>
                             (
                             <option key={index} value={department.id}>{department.departmentNameEN}</option>
@@ -138,34 +134,30 @@ const handleChange = (e) => {
 
                     <div className='form-group'>
                         <label>Leave Balance</label>
-                        <input type='number' className='form-control' onChange={handleChange} name='leaveBalance'/>
+                        <input type='number' className='form-control' {...register("leaveBalance")} name='leaveBalance'/>
                     </div>
 
                     <div className='form-group'>
-                        <label>Created Date</label>
-                        <input type='datetime-local' className='form-control' onChange={handleChange} name='empCreated'/>
+                        <input type='datetime-local' className='form-control' {...register("empCreated")} name='empCreated' hidden/>
                     </div>
                     
                     <div className='form-group'>
-                        <label>Created By</label>
-                        <input type='text' className='form-control' onChange={handleChange} name='empCreatedBy'/>
+                        <input type='text' className='form-control' {...register("empCreatedBy")} name='empCreatedBy' hidden/>
                     </div>
                     
                     <div className='form-group'>
-                        <label>Modified</label>
-                        <input type='datetime-local' className='form-control' onChange={handleChange} name='empModified'/>
+                        <input type='datetime-local' className='form-control' {...register("empModified")} name='empModified' hidden/>
                     </div>
                     
                     <div className='form-group'>
-                        <label>Modified By</label>
-                        <input type='text' className='form-control' onChange={handleChange} name='empModifiedBy'/>
+                        <input type='text' className='form-control' {...register("empModifiedBy")} name='empModifiedBy' hidden/>
                     </div>
                     <br/>
-                    <button className='btn btn-primary'>Add</button>
-                </form>
+                    <button className='btn btn-primary'   disabled={isSubmitting}  >Add</button>
             </div>      
+            </form>
+        </div>               
 
-        </div>
     );
 }
 

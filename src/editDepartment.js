@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import MyNavbar from './MyNavbar';
 import { useParams } from 'react-router-dom';
-
+import { useForm   } from "react-hook-form"
+import {z} from 'zod';
 
 function EditDepartment() {
 
+    const { register, formState :{errors,isSubmitting}, setError,handleSubmit} = useForm();
     const { id } = useParams();
     const [dep, setDepartment] = useState({
-    id : 0,
     departmentNameEN:'',
     departmentNameAR:'',
     created: '',
@@ -31,17 +32,15 @@ function EditDepartment() {
             
         }, [id]);
 
-        const handleSubmit = (e) => {
+        const onSubmit = (e,data) => {
         e.preventDefault();
         fetch(`https://localhost:7144/api/Departments/${id}`,
         {
-            body: JSON.stringify(dep),
+            body: JSON.stringify(data),
             method: 'PUT',
             headers : {'content-type' : 'application/json'}
         }
-        ).then((res)=>{
-            return res.json();
-        }).then((data) => {
+        ).then((data) => {
         console.log('updated successfully');
         }).catch((error) => {
             console.log(error);
@@ -67,7 +66,7 @@ function EditDepartment() {
     return (
         <>
         <MyNavbar/>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
         <div className='container' style={{paddingTop:'80px'}}  >
             <h1>Edit Department</h1>
             <div className='form-group'>               
@@ -80,20 +79,20 @@ function EditDepartment() {
                 <input className='form-control' type='text' name='departmentNameAR' value={dep.departmentNameAR} onChange={handleChange}/>
             </div>
             <div className='form-group'>
-                <label>Created</label>
-                <input className='form-control' type='datetime-local' name='created' value={dep.created} onChange={handleChange} />
+    
+                <input className='form-control' type='datetime-local' name='created' value={dep.created} onChange={handleChange} hidden/>
             </div>
             <div className='form-group'>
-                <label>Created By</label>
-                <input className='form-control' type='text' name='createdBy' value={dep.createdBy} onChange={handleChange}/>
+        
+                <input className='form-control' type='text' name='createdBy' value={dep.createdBy} onChange={handleChange} hidden/>
             </div>
             <div className='form-group'>
-                <label>Modified</label>
-                <input className='form-control' type='datetime-local' name='modified' value={dep.modified} onChange={handleChange}/>
+            
+                <input className='form-control' type='datetime-local' name='modified' value={dep.modified} onChange={handleChange} hidden />
             </div>
             <div className='form-group'>
-                <label>Modified By</label>
-                <input className='form-control' type='text' name='ModifiedBy' value={dep.modifiedBy} onChange={handleChange}/>
+    
+                <input className='form-control' type='text' name='ModifiedBy' value={dep.modifiedBy} onChange={handleChange} hidden/>
             </div>
             <br/>
             <div className='form-group'>

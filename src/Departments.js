@@ -24,7 +24,6 @@ const handleDeleteDepartmentClick = (id) => {
         method: 'DELETE',
         Headers :{'content-type' :'application/json'} 
     })
-    .then(response => response.json())
     .then(data => 
         {
             console.log('deleted successfully');
