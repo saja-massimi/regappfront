@@ -20,7 +20,7 @@ const handleEditDepartmentClick = ( id) => {
 
 const handleDeleteDepartmentClick = (id) => {
 
-    fetch(`https://localhost:7144/api/Departments/${id}`,{
+    fetch(`http://localhost:7144/api/Departments/${id}`,{
         method: 'DELETE',
         Headers :{'content-type' :'application/json'} 
     })
@@ -32,7 +32,7 @@ const handleDeleteDepartmentClick = (id) => {
 }
 
 useEffect(() => {  
-    fetch('https://localhost:7144/api/Departments',{
+    fetch('http://localhost:7144/api/Departments',{
         method: 'GET',
         Headers :{'content-type' :'application/json'}, 
     })

@@ -9,7 +9,7 @@ function Employees() {
     let JWTtoken = sessionStorage.getItem('token');
     useEffect(()=>
     {   
-        fetch('https://localhost:7144/api/Employees',{
+        fetch('http://localhost:7144/api/Employees',{
         method: 'GET',
         headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken},
     } 
@@ -33,7 +33,7 @@ function Employees() {
 
 
     const handleDeleteEmployee = (id) => {
-    fetch(`https://localhost:7144/api/Employees/${id}`,{
+    fetch(`http://localhost:7144/api/Employees/${id}`,{
         method: 'DELETE',
         headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken}, 
     }).then(data => 

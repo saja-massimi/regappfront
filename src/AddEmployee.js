@@ -2,10 +2,26 @@ import React, { useEffect,useState } from 'react';
 import MyNavbar from './MyNavbar';
 import { useNavigate  } from 'react-router-dom';
 import { useForm  } from "react-hook-form";
-import {z} from 'zod';
+import * as Yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function AddEmployee() {
-const { register, formState :{errors,isSubmitting}, handleSubmit} = useForm();
+const { register, formState :{errors,isSubmitting}, handleSubmit} = useForm(
+    {
+        resolver: yupResolver(
+            Yup.object().shape({
+                empNameEN: Yup.string().min(3).required('Employee Name in english is required'),
+                empNameAR: Yup.string().min(3).required('Employee Name in arabic is required'),
+                salary: Yup.number('Salary must be a number').min(100).max(10000).required(' Salary is required'),
+                hireDate: Yup.date().required(),
+                jobTitle: Yup.string().required(),
+                leaveBalance: Yup.number('Enter leave balance').required('Leave Balance is required'),
+                isManager: Yup.boolean().required('Choose whether the employee is a manager or not'),
+            })
+        )
+    
+    }
+);
 
 const [departments , setDepartments] = useState([]);
 const [managers , setManagers] = useState([]);
@@ -16,7 +32,7 @@ const nav = useNavigate();
 
 useEffect( () => {
 
-fetch('https://localhost:7144/api/Departments',{
+fetch('http://localhost:7144/api/Departments',{
 method: 'GET',  
 headers :{'content-type' :'application/json'},  
 }).then(response =>{
@@ -26,7 +42,7 @@ headers :{'content-type' :'application/json'},
 ).catch(error => console.log(error));
 
 
-fetch('https://localhost:7144/api/Employees',{
+fetch('http://localhost:7144/api/Employees',{
 method : 'GET',
 headers :{'content-type' :'application/json'},
 }).then(res => {
@@ -65,11 +81,14 @@ fetch('https://localhost:7144/api/Employees',{
                         <input className='form-control' type='hidden' name='empID' {...register("empID")}/>
                         <label>Employee Name (EN)</label>
                         <input type='text' className='form-control' name='empNameEN' {...register("empNameEN")}/>
+                        {errors.empNameEN && <p style={{color:'red'}}>{errors.empNameEN.message}</p>}
                     </div>
 
                     <div className='form-group'>
                         <label>Employee Name (AR)</label>
                         <input type='text' className='form-control' name='empNameAR' {...register("empNameAR")} />
+                        {errors.empNameAR && <p style={{color:'red'}}>{errors.empNameAR.message}</p>}
+
                     </div>
 
                     <div className='form-group'>
@@ -94,6 +113,7 @@ fetch('https://localhost:7144/api/Employees',{
                     Is Manager?
                     <div className="form-check">
                     <input className="form-check-input" type="radio" name="isManger" id="yes" {...register("isManager")} value={true.toString()}/>
+
                     <label className="form-check-label">
                     Yes
                     </label>
@@ -104,19 +124,27 @@ fetch('https://localhost:7144/api/Employees',{
                     No
                     </label>
                     </div>
+                    {errors.isManager && <p style={{color:'red'}}>{errors.isManager.message}</p>}
                     </div>
 
                     <div className='form-group'>
                         <label>Salary</label>
                         <input type='number' className='form-control' max={9000} {...register("salary")} name='salary'/>
+                        {errors.salary && <p style={{color:'red'}}>{errors.salary.message}</p>}
+
                     </div>
+
                     <div className='form-group'>
                         <label>Hire Date</label>
                         <input type='datetime-local' className='form-control' {...register("hireDate")} name='hireDate'/>
+                        {errors.hireDate && <p style={{color:'red'}}>{errors.hireDate.message}</p>}
+
                     </div>
                     <div className='form-group'>
                         <label>Job Title</label>
                         <input type='text' className='form-control' {...register("jobTitle")} name='jobTitle'/>
+                        {errors.jobTitle && <p style={{color:'red'}}>{errors.jobTitle.message}</p>}
+
                     </div>
 
                     <div className='form-group'>
@@ -135,7 +163,11 @@ fetch('https://localhost:7144/api/Employees',{
                     <div className='form-group'>
                         <label>Leave Balance</label>
                         <input type='number' className='form-control' {...register("leaveBalance")} name='leaveBalance'/>
+                        {errors.leaveBalance && <p style={{color:'red'}}>{errors.leaveBalance.message}</p>}
+
                     </div>
+
+
 
                     <div className='form-group'>
                         <input type='datetime-local' className='form-control' {...register("empCreated")} name='empCreated' hidden/>

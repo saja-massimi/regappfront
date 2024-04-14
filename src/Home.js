@@ -20,7 +20,7 @@ export default class Home extends Component {
     getUsername = () => {
         let JWTtoken = sessionStorage.getItem('token');
 
-        fetch("https://localhost:7144/api/Registration", {
+        fetch("http://localhost:7144/api/Registration", {
             method: "GET",
             headers: { 'content-type': 'application/json', Authorization: 'bearer '+ JWTtoken},
         }).then((res) => {

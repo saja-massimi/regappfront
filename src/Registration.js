@@ -19,7 +19,6 @@ export default function Register() {
             password: Yup.string().required("This feild is required").min(6, 'must be at least 6 characters'),
         }),
         onSubmit: (values) => {
-            console.log(values);
 
             fetch("https://localhost:7144/api/Registration", {
                 method: "POST",
@@ -41,7 +40,6 @@ export default function Register() {
     });
 
 
-console.log(formik.errors);
 
     if (isRegistered) {
         return <Navigate to='/Login' />;

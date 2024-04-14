@@ -22,7 +22,7 @@ export default class Login extends Component {
     handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("https://localhost:7144/api/Registration/login", {
+    fetch("http://localhost:7144/api/Registration/login", {
     method: "POST",
     headers: { 'content-type': 'application/json'},
         body: JSON.stringify(this.state)
