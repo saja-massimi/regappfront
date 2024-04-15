@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import MyNavbar from './MyNavbar';
 import { useParams } from 'react-router-dom';
-import { useForm   } from "react-hook-form"
-import {z} from 'zod';
+import { useNavigate  } from 'react-router-dom';
 
 function EditDepartment() {
 
-    const { register, formState :{errors,isSubmitting}, setError,handleSubmit} = useForm();
+    const nav = useNavigate();
     const { id } = useParams();
     const [dep, setDepartment] = useState({
     departmentNameEN:'',
@@ -20,7 +19,7 @@ function EditDepartment() {
 
         useEffect(() => {
 
-            fetch(`https://localhost:7144/api/Departments/${id}`,{
+            fetch(`http://localhost:7144/api/Departments/${id}`,{
                 method: 'GET',          
                 headers :{'content-type' :'application/json'},  
             }).then(response =>{
@@ -32,9 +31,9 @@ function EditDepartment() {
             
         }, [id]);
 
-        const onSubmit = (e,data) => {
+        const handleSubmit = (e,data) => {
         e.preventDefault();
-        fetch(`https://localhost:7144/api/Departments/${id}`,
+        fetch(`http://localhost:7144/api/Departments/${id}`,
         {
             body: JSON.stringify(data),
             method: 'PUT',
@@ -42,6 +41,8 @@ function EditDepartment() {
         }
         ).then((data) => {
         console.log('updated successfully');
+        nav('/Departments');
+
         }).catch((error) => {
             console.log(error);
         }
@@ -66,7 +67,7 @@ function EditDepartment() {
     return (
         <>
         <MyNavbar/>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit}>
         <div className='container' style={{paddingTop:'80px'}}  >
             <h1>Edit Department</h1>
             <div className='form-group'>               

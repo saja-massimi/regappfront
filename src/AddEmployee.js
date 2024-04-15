@@ -13,15 +13,18 @@ const { register, formState :{errors,isSubmitting}, handleSubmit} = useForm(
                 empNameEN: Yup.string().min(3).required('Employee Name in english is required'),
                 empNameAR: Yup.string().min(3).required('Employee Name in arabic is required'),
                 salary: Yup.number('Salary must be a number').min(100).max(10000).required(' Salary is required'),
-                hireDate: Yup.date().required(),
+                hireDate: Yup.date('Hire Date is invalid').required(),
                 jobTitle: Yup.string().required(),
-                leaveBalance: Yup.number('Enter leave balance').required('Leave Balance is required'),
+                leaveBalance: Yup.number('Leave Balance must be a number').required('Leave Balance is required'),
                 isManager: Yup.boolean().required('Choose whether the employee is a manager or not'),
             })
         )
     
     }
 );
+
+
+
 
 const [departments , setDepartments] = useState([]);
 const [managers , setManagers] = useState([]);
@@ -53,13 +56,17 @@ headers :{'content-type' :'application/json'},
     ).catch(error => console.log(error));
 },[]);  
 
-const  onSubmit = (e,data) => {
-e.preventDefault();
+const  onSubmit = (data) => {
 //Authorization: 'bearer '+ JWTtoken
-fetch('https://localhost:7144/api/Employees',{
+fetch('http://localhost:7144/api/Employees',{
     method: 'POST',
     headers :{'content-type' :'application/json'}, 
     body: JSON.stringify(data)
+}).then(data=>
+{
+    console.log('Employee added successfully');
+    nav('/Employees');
+
 }).catch(error => console.error(error));
 
 
@@ -78,9 +85,9 @@ fetch('https://localhost:7144/api/Employees',{
                 <h1>Add Employee</h1>
 
                     <div className='form-group'>   
-                        <input className='form-control' type='hidden' name='empID' {...register("empID")}/>
+                        <input className='form-control' type='hidden' name='empID' value={0} />
                         <label>Employee Name (EN)</label>
-                        <input type='text' className='form-control' name='empNameEN' {...register("empNameEN")}/>
+                        <input type='text' className='form-control' name='empNameEN' {...register("empNameEN")} />
                         {errors.empNameEN && <p style={{color:'red'}}>{errors.empNameEN.message}</p>}
                     </div>
 
@@ -88,7 +95,6 @@ fetch('https://localhost:7144/api/Employees',{
                         <label>Employee Name (AR)</label>
                         <input type='text' className='form-control' name='empNameAR' {...register("empNameAR")} />
                         {errors.empNameAR && <p style={{color:'red'}}>{errors.empNameAR.message}</p>}
-
                     </div>
 
                     <div className='form-group'>
@@ -100,7 +106,7 @@ fetch('https://localhost:7144/api/Employees',{
                                 if(manager.isManger === true)
                                 return <option  key={index} value={manager.empID}>{manager.empNameEN}</option>
                                 else 
-                                return null
+                                return null;
                             }
                             )}  
 
@@ -167,23 +173,6 @@ fetch('https://localhost:7144/api/Employees',{
 
                     </div>
 
-
-
-                    <div className='form-group'>
-                        <input type='datetime-local' className='form-control' {...register("empCreated")} name='empCreated' hidden/>
-                    </div>
-                    
-                    <div className='form-group'>
-                        <input type='text' className='form-control' {...register("empCreatedBy")} name='empCreatedBy' hidden/>
-                    </div>
-                    
-                    <div className='form-group'>
-                        <input type='datetime-local' className='form-control' {...register("empModified")} name='empModified' hidden/>
-                    </div>
-                    
-                    <div className='form-group'>
-                        <input type='text' className='form-control' {...register("empModifiedBy")} name='empModifiedBy' hidden/>
-                    </div>
                     <br/>
                     <button className='btn btn-primary'   disabled={isSubmitting}  >Add</button>
             </div>      

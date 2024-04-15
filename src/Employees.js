@@ -39,6 +39,7 @@ function Employees() {
     }).then(data => 
         {
             console.log('deleted successfully');
+            nav('/Employees');
         })
     .catch(error => console.error(error));
 

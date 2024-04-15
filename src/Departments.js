@@ -27,6 +27,7 @@ const handleDeleteDepartmentClick = (id) => {
     .then(data => 
         {
             console.log('deleted successfully');
+            nav('/Departments');
         })
     .catch(error => console.error(error));
 }
