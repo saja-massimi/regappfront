@@ -1,73 +1,72 @@
-import React from 'react';
 import MyNavbar from './MyNavbar';
-import { useForm  } from "react-hook-form";
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate  } from 'react-router-dom';
-
-
 
 function AddDepartment() {
     
+
+
+    let JWTtoken = sessionStorage.getItem('token');
+
     const nav = useNavigate();
+    const formik= useFormik({
+        initialValues: {
+            departmentNameEN: '',
+            departmentNameAR: '',
+            
+        },
 
-    const validationSchema = Yup.object().shape({
-        departmentNameEN: Yup.string().min(3).required('Department Name in english is required'),
-        departmentNameAR: Yup.string().min(3).required('Department Name in arabic is required'),
-    });
-
-    const { register, handleSubmit, formState :{errors,isSubmitting}, setError} = useForm({   
-        resolver: yupResolver(validationSchema),
-    });
-
-
-    const onSubmit = async (data) => {
-        fetch('http://localhost:7144/api/Departments', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if(response.status<=399)
-                nav('/Departments');
-            })
-            .then(result => {
-                console.log(result);
+        validationSchema: Yup.object().shape({
+            departmentNameEN: Yup.string().required('Department Name in english is required'),
+            departmentNameAR: Yup.string().required('Department Name in arabic is required'),
+        }),
+        onSubmit: (values) => {
+            fetch('http://localhost:7144/api/Departments',{
+                method: 'POST',
+                headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken}, 
+                body: JSON.stringify(values)
                 
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }; 
+            }).then(data=>
+            {
+                formik.setSubmitting(false);
+                console.log('Department added successfully');
+                nav('/Departments');
+        
+            }).catch(error => console.error(error));
+        },
+        
+    });
+
+
 
     return (
         <div>
             <MyNavbar />
-            <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" >
+            <form onSubmit={formik.handleSubmit} autoComplete="off" >
                 <div className='container' style={{ paddingTop: '80px' }}>
                     <h1>Add Department</h1>
 
                     <div className='form-group'>
-                        <input className='form-control' {...register('id')} type='hidden' name='id' value={0} />
+                        <input className='form-control'  type='hidden' name='id' value={0} />
                         <label>Department Name (EN)</label>
-                        <input className='form-control' {...register('departmentNameEN')} type='text' name='departmentNameEN' />
-                        {errors.departmentNameEN && <p style={{color:'red'}}>{errors.departmentNameEN.message}</p>}
+                        <input className='form-control'  type='text' name='departmentNameEN' value={formik.values.departmentNameEN} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+                        {formik.errors.departmentNameEN && formik.touched.departmentNameEN ?<p style={{color:'red'}}>{formik.errors.departmentNameEN}</p>: null}
                         </div>
                     <div className='form-group'>
                         <label>Department Name (AR)</label>
-                        <input className='form-control' {...register('departmentNameAR')} type='text' name='departmentNameAR' />
-                        {errors.departmentNameAR && <p style={{color:'red'}}>{errors.departmentNameAR.message}</p>}
-
+                        <input className='form-control' type='text' name='departmentNameAR' value={formik.values.departmentNameAR} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
+                        {formik.errors.departmentNameAR && formik.touched.departmentNameAR ?<p style={{color:'red'}}>{formik.errors.departmentNameAR}</p>: null}
                     </div>
                     
                     <br />
                     <div className='form-group'>
-                        <button className='btn btn-primary' type='submit' disabled={isSubmitting}>Save</button>
+                        <button className='btn btn-primary' type='submit' disabled={!formik.isValid || formik.isSubmitting} >Save</button>
                     </div>
                 </div>
             </form>
         </div>
     );
-}
 
+}
 export default AddDepartment;

@@ -33,13 +33,18 @@ function Employees() {
 
 
     const handleDeleteEmployee = (id) => {
+    
     fetch(`http://localhost:7144/api/Employees/${id}`,{
         method: 'DELETE',
         headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken}, 
     }).then(data => 
         {
+            if(data.status <=399)
+            {
             console.log('deleted successfully');
-            nav('/Employees');
+            window.location.reload();
+
+        }
         })
     .catch(error => console.error(error));
 
@@ -48,11 +53,12 @@ function Employees() {
     return (
 
         <>
+        <div>
         <MyNavbar/>
         <div className='container' style={{paddingTop:'80px'}}>
-        <div >
         <button className='btn btn-success' onClick={handleAddEmployeeClick}>Add Empolyee</button>
         </div>
+        
             <h1>Employees</h1>
             <table className='table table-striped'>
                 <thead>

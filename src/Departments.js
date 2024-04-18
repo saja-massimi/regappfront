@@ -22,12 +22,13 @@ const handleDeleteDepartmentClick = (id) => {
 
     fetch(`http://localhost:7144/api/Departments/${id}`,{
         method: 'DELETE',
-        Headers :{'content-type' :'application/json'} 
+        headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken} 
     })
     .then(data => 
         {
+
             console.log('deleted successfully');
-            nav('/Departments');
+            window.location.reload();
         })
     .catch(error => console.error(error));
 }
@@ -35,7 +36,7 @@ const handleDeleteDepartmentClick = (id) => {
 useEffect(() => {  
     fetch('http://localhost:7144/api/Departments',{
         method: 'GET',
-        Headers :{'content-type' :'application/json'}, 
+        headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken}, 
     })
     .then(response => response.json())
     .then(data => 
@@ -45,7 +46,7 @@ useEffect(() => {
         })
     .catch(error => console.error(error));
     
-},  [JWTtoken] );
+},[]);
 
 
 
@@ -55,11 +56,11 @@ useEffect(() => {
         <>
         <div>
         <MyNavbar/>
-        <div className='container' style={{paddingTop:'80px'}}>
+        <div className='container' style={{paddingTop:'80px', }}>
         <button className='btn btn-success' onClick={handleAddDepartmentClick}>Add Department</button>
         </div>
 
-        <table className='table table-striped'>
+        <table className='table table-striped' >
         <thead>
             <tr>
                 <th>ID</th>
@@ -69,7 +70,7 @@ useEffect(() => {
                 <th>Created By </th>
                 <th>Modified </th>
                 <th>Modified By</th>
-                <th>         </th>
+                <th></th>
 
             </tr>
             

@@ -30,7 +30,7 @@ export default class Login extends Component {
         if (res.status === 200) {
         this.setState({ isLogged: true});
         console.log("success");
-
+            
         return res.json();
 
         } else {

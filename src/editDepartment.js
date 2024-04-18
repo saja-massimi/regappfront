@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate  } from 'react-router-dom';
 
 function EditDepartment() {
+    let JWTtoken = sessionStorage.getItem('token');
 
     const nav = useNavigate();
     const { id } = useParams();
@@ -21,7 +22,7 @@ function EditDepartment() {
 
             fetch(`http://localhost:7144/api/Departments/${id}`,{
                 method: 'GET',          
-                headers :{'content-type' :'application/json'},  
+                headers :{'content-type' :'application/json',Authorization: 'bearer '+ JWTtoken},  
             }).then(response =>{
                 return response.json();
             }).then(data => {   
@@ -31,18 +32,23 @@ function EditDepartment() {
             
         }, [id]);
 
-        const handleSubmit = (e,data) => {
-        e.preventDefault();
+        const handleSubmit = (e) => {
+            e.preventDefault();
         fetch(`http://localhost:7144/api/Departments/${id}`,
         {
-            body: JSON.stringify(data),
+            body: JSON.stringify(dep),
             method: 'PUT',
-            headers : {'content-type' : 'application/json'}
+            headers : {'content-type' : 'application/json',Authorization: 'bearer '+ JWTtoken}
         }
         ).then((data) => {
+        
+
+        if(data.status < 399){
+        
         console.log('updated successfully');
         nav('/Departments');
-
+    }
+        
         }).catch((error) => {
             console.log(error);
         }
@@ -51,7 +57,6 @@ function EditDepartment() {
         };
 
         const handleChange = (e) => {
-            e.preventDefault();
             const { name, value } = e.target;
 
             setDepartment(prevState => ({
@@ -83,8 +88,8 @@ function EditDepartment() {
     
                 <input className='form-control' type='datetime-local' name='created' value={dep.created} onChange={handleChange} hidden/>
             </div>
+            
             <div className='form-group'>
-        
                 <input className='form-control' type='text' name='createdBy' value={dep.createdBy} onChange={handleChange} hidden/>
             </div>
             <div className='form-group'>

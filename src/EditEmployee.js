@@ -81,7 +81,9 @@ fetch(`http://localhost:7144/api/Employees/${id}`,
             headers : {'content-type' : 'application/json',Authorization: 'bearer '+ JWTtoken}
         }).then((data) => {
             console.log('updated successfully');
+            if(data.status <= 399)
             nav('/Employees');
+
         }).catch((error) => {
             console.log(error);
         })
